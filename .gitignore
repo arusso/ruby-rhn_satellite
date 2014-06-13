@@ -48,3 +48,6 @@ pkg
 #*.rbc
 
 .document
+
+# Leave your ruby preferences at home
+.ruby-version
