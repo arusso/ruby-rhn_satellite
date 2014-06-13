@@ -1,24 +1,53 @@
 module RhnSatellite
   class ChannelSoftware < RhnSatellite::Connection::Base
     
+    # API Namespace for this class
+    API_NS="channel.software"
+
     class << self
-      def clone(original_label,name,label,summary,original_state=true,additional_options = {})
-        channel_details = {
-          'name' => name,
-          'label' => label,
-          'summary' => summary
-        }.merge(additional_options)
-        base.default_call('channel.software.clone',original_label,channel_details,original_state)
+      # Clone a channel. If arch_label is omitted, the architecture label of the
+      # original channel is used. If parent_label is omitted, the clone becomes
+      # a base channel.
+      #
+      # +original_label+:: (_string_) label of the channel we want to clone from
+      # +channel_details+:: (_hash_) details for our new cloned channel
+      #                     * (_string_) +name+
+      #                     * (_string_) +label+
+      #                     * (_string_) +summary+
+      #                     * (_string_) +parent_label+ (optional)
+      #                     * (_string_) +arch_label+ (optional)
+      #                     * (_string_) +gpg_key_url+ (optional)
+      #                     * (_string_) +gpg_key_id+ (optional)
+      #                     * (_string_) +gpg_key_fp+ (optional)
+      #                     * (_string_) +description+ (optional)
+      # +original_state+:: (_boolean_) whether to clone just the channel with
+      #                    errata (+false+) or without errata (+true+). Default
+      #                    is +false+.
+      # === Example:
+      #   new_channel = {
+      #     'name'       => 'RHEL6 Weekly Channel',
+      #     'label'      => 'rhel-x86_64-server-6-weekly',
+      #     'summary'    => 'RHEL6 Weekly Refresh Channel (x86_64)',
+      #     'arch_label' => 'channel-x86_64',
+      #   }
+      #   RhnSatellite::ChannelSoftware.clone('rhel-x86_64-server-6',new_channel)
+      #
+      def clone(original_label,channel_details,original_state=false)
+        apicall = "#{API_NS}.clone"
+
+        base.default_call(apicall,original_label,channel_details,original_state)
       end
 
-      def list_children(channel_label)
-        base.default_call('channel.software.listChildren',channel_label)
+      def list_children(label)
+        base.default_call('channel.software.listChildren',label)
       end
       def list_all_packages(channel_label)
-        base.default_call('channel.software.listAllPackages',channel_label)
+        base.default_call('channel.software.listAllPackages',label)
       end
       def list_all_packages(channel_label,start_date,end_date)
-        base.default_call('channel.software.listAllPackages',channel_label,start_date,end_date)
+        base.default_call('channel.software.listAllPackages',label,
+                          start_date,
+                          end_date)
       end
 
       # Create a software channel

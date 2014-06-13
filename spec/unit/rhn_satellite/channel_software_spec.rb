@@ -27,10 +27,15 @@ describe RhnSatellite::ChannelSoftware do
           'label' => 'some_label',
           'summary' => 'summary'
         },
-        true
+        false
       ).returns("123")
 
-      RhnSatellite::ChannelSoftware.clone('old_channel','new_channel','some_label','summary')
+      new_channel = {
+        'name' => 'new_channel',
+        'label' => 'some_label',
+        'summary' => 'summary',
+      }
+      RhnSatellite::ChannelSoftware.clone('old_channel',new_channel)
     end
     context "with additional options" do
       it "should pass these options" do
@@ -47,7 +52,13 @@ describe RhnSatellite::ChannelSoftware do
           true
         ).returns("123")
   
-        RhnSatellite::ChannelSoftware.clone('old_channel','new_channel','some_label','summary',true,'parent_label' => 'blub')        
+        new_channel = {
+          'name' => 'new_channel',
+          'label' => 'some_label',
+          'summary' => 'summary',
+          'parent_label' => 'blub',
+        }
+        RhnSatellite::ChannelSoftware.clone('old_channel',new_channel,true)
       end
     end
   end
