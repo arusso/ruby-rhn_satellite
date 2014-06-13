@@ -51,3 +51,6 @@ pkg
 
 # Leave your ruby preferences at home
 .ruby-version
+
+# Ignore vim swp files
+*.swp
