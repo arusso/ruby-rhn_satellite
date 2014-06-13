@@ -41,13 +41,41 @@ module RhnSatellite
       def list_children(label)
         base.default_call('channel.software.listChildren',label)
       end
-      def list_all_packages(channel_label)
-        base.default_call('channel.software.listAllPackages',label)
-      end
-      def list_all_packages(channel_label,start_date,end_date)
-        base.default_call('channel.software.listAllPackages',label,
-                          start_date,
-                          end_date)
+
+      # List all packages in a channel
+      #
+      # +label+:: Channel label
+      # +start_date+:: (_date_) ISO8601 date in which to filter out packages
+      #                modified before. (optional)
+      # +end_date+:: (_date_) ISO8601 date in which to filter out packages
+      #              modified after. Requires +start_date+ to be set. (optional)
+      #
+      # === Example:
+      #   require 'time'
+      #
+      #   chan = 'rhel-x86_64-server-6'
+      #   after = Date.parse('1/1/2009').iso8601
+      #   before = Date.parse('1/1/2014').iso8601
+      #
+      #   # get all packages in 'rhel-x86_64-server-6'
+      #   pkgs = RhnSatellite::ChannelSoftware.list_all_packages(chan)
+      #
+      #   # get all packages modified after 'after' in 'rhel-x86_64-server-6'
+      #   pkgs = RhnSatellite::ChannelSoftware.list_all_packages(chan,after)
+      #
+      #   # get all packages modified after 'after' and before 'before' in
+      #   # 'rhel-x86_64-server-6'.
+      #   pkgs = RhnSatellite::ChannelSoftware.list_all_packages(chan,after,before)
+      #
+      def list_all_packages(label,start_date=nil,end_date=nil)
+        apicall = "#{API_NS}.listAllPackages"
+        if start_date.nil?
+          base.default_call(apicall,label)
+        elsif end_date.nil?
+          base.default_call(apicall,label,start_date)
+        else
+          base.default_call(apicall,label,start_date,end_date)
+        end
       end
 
       # Create a software channel
