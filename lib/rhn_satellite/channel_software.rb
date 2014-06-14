@@ -1,13 +1,17 @@
 module RhnSatellite
   class ChannelSoftware < RhnSatellite::Connection::Base
-    
+
     # API Namespace for this class
     API_NS="channel.software"
 
     class << self
+      # === Description:
+      #
       # Clone a channel. If arch_label is omitted, the architecture label of the
       # original channel is used. If parent_label is omitted, the clone becomes
       # a base channel.
+      #
+      # === Parameters:
       #
       # +original_label+:: (_string_) label of the channel we want to clone from
       # +channel_details+:: (_hash_) details for our new cloned channel
@@ -23,7 +27,13 @@ module RhnSatellite
       # +original_state+:: (_boolean_) whether to clone just the channel with
       #                    errata (+false+) or without errata (+true+). Default
       #                    is +false+.
+      #
+      # === Returns:
+      #
+      # * (_int_) cloned channel ID
+      #
       # === Example:
+      #
       #   require 'rhn_satellite'
       #
       #   new_channel = {
@@ -40,17 +50,87 @@ module RhnSatellite
         base.default_call(apicall,original_label,channel_details,original_state)
       end
 
+      # === Description:
+      #
+      # Lists the children of a channel
+      #
+      # === Parameters:
+      #
+      # +label+:: (_string_) parent channel to list children of
+      #
+      # === Returns:
+      #
+      # * (_array_)
+      #   * (_hash_) - _channel_ _info_
+      #     * (_int_) id
+      #     * (_string_) name
+      #     * (_string_) label
+      #     * (_string_) arch_name
+      #     * (_string_) summary
+      #     * (_string_) description
+      #     * (_string_) checksum_label
+      #     * (_date_) last_modified
+      #     * (_string_) maintainer_name
+      #     * (_string_) maintainer_email
+      #     * (_string_) maintainer_phone
+      #     * (_string_) support_policy
+      #     * (_string_) gpg_key_url
+      #     * (_string_) gpg_key_id
+      #     * (_string_) gpg_key_fp
+      #     * (_date_) yumrepo_last_sync (optional)
+      #     * (_string_) end_of_life
+      #     * (_string_) parent_channel_label
+      #     * (_string_) clone_original
+      #     * (_array_)
+      #       * (_hash_) - _content_ _source_
+      #         * (_int_) id
+      #         * (_string_) label
+      #         * (_string_) sourceUrl
+      #         * (_string_) type
+      #
+      # === Example:
+      #
+      #   require 'rhn_satellite'
+      #
+      #   children = RhnSatellite::ChannelSoftware.list_children('rhel-x86_64-server-6')
+      #   children.each do |child|
+      #     puts "child channel: #{child['label']}"
+      #     puts "  content sources:"
+      #     child['contentSources'].each do |src|
+      #       puts "    - label: #{src['label']}"
+      #     end
+      #   end
+      #
       def list_children(label)
         base.default_call('channel.software.listChildren',label)
       end
 
+      # === Description:
+      #
       # List all packages in a channel
       #
-      # +label+:: Channel label
+      # === Parameters:
+      #
+      # +label+:: (_string_) Channel label
       # +start_date+:: (_date_) ISO8601 date in which to filter out packages
       #                modified before. (optional)
       # +end_date+:: (_date_) ISO8601 date in which to filter out packages
       #              modified after. Requires +start_date+ to be set. (optional)
+      #
+      # === Returns:
+      #
+      # * (_array_)
+      #   * (_hash_) - _package_
+      #     * (_string_) name
+      #     * (_string_) version
+      #     * (_string_) release
+      #     * (_string_) epoch
+      #     * (_string_) checksum
+      #     * (_string_) checksum_type
+      #     * (_int_) id
+      #     * (_string_) arch_label
+      #     * (_string_) last_modified_date
+      #     * (_string_) last_modified (deprecated)
       #
       # === Example:
       #   require 'time'
@@ -81,7 +161,11 @@ module RhnSatellite
         end
       end
 
+      # === Description:
+      #
       # Create a software channel
+      #
+      # === Parameters:
       #
       # +label+:: (_string_) label of the new channel
       # +name+:: (_string_) name of the new channel
@@ -117,6 +201,9 @@ module RhnSatellite
       #            * +fingerprint+:: (_string_) GPG key fingerprint. Default is
       #                              empty string.
       #
+      # === Returns:
+      #
+      # * (_int_) 1 if the creation succeeded, 0 otherwise
       #
       # === Example:
       #   require 'rhn_satellite'
@@ -145,9 +232,22 @@ module RhnSatellite
                           checksum_type, gpgkey)
       end
 
+      # === Description:
+      #
       # Delete a software channel
       #
-      # +label+:: Label of software channel to delete
+      # === Parameters:
+      #
+      # +label+:: (_string_) Label of software channel to delete
+      #
+      # === Returns:
+      #
+      # * (_int_) 1 on success, exception thrown otherwise
+      #
+      # === Example:
+      #   require 'rhn_satellite'
+      #
+      #   RhnSatellite::ChannelSoftware.delete('my-channel-label')
       #
       def delete(label)
         base.default_call('channel.software.delete',label)
