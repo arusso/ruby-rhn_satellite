@@ -24,6 +24,8 @@ module RhnSatellite
       #                    errata (+false+) or without errata (+true+). Default
       #                    is +false+.
       # === Example:
+      #   require 'rhn_satellite'
+      #
       #   new_channel = {
       #     'name'       => 'RHEL6 Weekly Channel',
       #     'label'      => 'rhel-x86_64-server-6-weekly',
@@ -52,6 +54,7 @@ module RhnSatellite
       #
       # === Example:
       #   require 'time'
+      #   require 'rhn_satellite'
       #
       #   chan = 'rhel-x86_64-server-6'
       #   after = Date.parse('1/1/2009').iso8601
@@ -80,47 +83,66 @@ module RhnSatellite
 
       # Create a software channel
       #
-      # +label+:: label of the new channel
-      # +name+:: name of the new channel
-      # +summary+:: summary of the channel
-      # +archlabel+:: the label of the architecture for the channel.
-      #   * +channel\-ia32+ - for 32 bit channel architecture
-      #   * +channel\-ia64+ - for 64 bit channel architecture
-      #   * +channel\-sparc+ - for Sparc channel architecture
-      #   * +channel\-alpha+ - for Alpha channel architecture
-      #   * +channel\-s390+ - for s390 channel architecture
-      #   * +channel\-s390x+ - for s390x channel architecture
-      #   * +channel\-iSeries+ - for i-Series architecture
-      #   * +channel\-pSeries+ - for p-Series architecture
-      #   * +channel\-x86_64+ - for x86_64 channel architecture
-      #   * +channel\-ppc+ - for PPC channel architecture
-      #   * +channel\-sparc\-sun\-solaris+ - for Sparc Solaris channel
-      #                                      architecture
-      #   * +channel\-i386\-sun\-solaris+ - for i386 Solaris channel
-      #                                     architecture
-      # +parentlabel+:: the label of the parent channel or an empty string 
-      #                 (default) if it does not have one.
-      # +checksumtype+:: checksum type for this channel, used for yum repository
-      #                  metadata generation.
-      #   * +sha1+ - offers highest compatibility with clients
-      #   * +sha256+ - offers highest security, but is compatible with newer
-      #                clients e.g. RHEL6 and newer. (default)
-      # +gpgkey+:: hash containing the url, id and fingerprint
+      # +label+:: (_string_) label of the new channel
+      # +name+:: (_string_) name of the new channel
+      # +summary+:: (_string_) summary of the channel
+      # +archlabel+:: (_string_) the label of the architecture for the channel
+      #               (optional)
+      #               * +channel-ia32+:: 32 bit channel architecture
+      #               * +channel-ia64+:: 64 bit channel architecture
+      #               * +channel-sparc+:: Sparc channel architecture
+      #               * +channel-alpha+:: Alpha channel architecture
+      #               * +channel-s390+:: s390 channel architecture
+      #               * +channel-s390x+:: s390x channel architecture
+      #               * +channel-iSeries+:: i-Series architecture
+      #               * +channel-pSeries+:: p-Series architecture
+      #               * +channel-x86_64+:: x86_64 channel architecture
+      #               * +channel-ppc+:: PPC channel architecture
+      #               * +channel-sparc-sun-solaris+:: Sparc Solaris channel
+      #                                               architecture
+      #               * +channel-i386-sun-solaris+:: for i386 Solaris channel
+      #                                              architecture
+      # +parentlabel+:: (_string_) the label of the parent channel or an empty
+      #                 string if it does not have one. The default is an empty
+      #                 string.
+      # +checksumtype+:: (_string_) checksum type for this channel, used for yum
+      #                  repository metadata generation.
+      #                  * +sha1+:: offers highest compatibility with clients
+      #                  * +sha256+:: offers highest security, but is compatible
+      #                               with newer clients e.g. RHEL6 and newer.
+      #                               This is the default.
+      # +gpgkey+:: (_hash_) information regarding the gpg key
+      #            * +url+:: (_string_) GPG key URL. Default is empty string.
+      #            * +id+:: (_string_) GPG key ID. Default is empty string
+      #            * +fingerprint+:: (_string_) GPG key fingerprint. Default is
+      #                              empty string.
       #
-      def create(label,name,summary,arch,parent_label="",checksum_type="sha256",gpgkey = { })
+      #
+      # === Example:
+      #   require 'rhn_satellite'
+      #
+      #   chan = 'my-super-channel-x86_64'
+      #   summary = 'My Super Channel - x86_64'
+      #   parent = 'my-parent-channel-x86_64'
+      #   arch = 'channel-x86_64'
+      #   chksum = 'sha256'
+      #   gpg = {}
+      #
+      #   # create a new channel with no parent
+      #   RhnSatellite::ChannelSoftware.create(chan,summary,arch,'',chksum,gpg)
+      #
+      #   # create a new channel with parent channel 'my-parent'
+      #   RhnSatellite::ChannelSoftware.create(chan,summary,arch,parent,chksum,gpg)
+      #
+      def create(label,name,summary,arch,parent_label='',checksum_type='sha256',gpgkey = { })
+        apicall = "#{API_NS}.create"
         gpgkey = {
           'url' => '',
           'id' => '',
           'fingerprint' => ''
         }.merge(gpgkey)
-        base.default_call('channel.software.create',
-                          label,
-                          name,
-                          summary,
-                          arch,
-                          parent_label,
-                          checksum_type,
-                          gpgkey)
+        base.default_call(apicall, label, name, summary, arch, parent_label,
+                          checksum_type, gpgkey)
       end
 
       # Delete a software channel
