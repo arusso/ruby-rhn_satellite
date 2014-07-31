@@ -258,6 +258,7 @@ module RhnSatellite
       # Returns details of the given channel as a map
       #
       # === Parameters:
+      #
       # +label+:: (_string_) Label of software channel
       #
       # === Returns:
@@ -266,6 +267,23 @@ module RhnSatellite
       #
       def get_details(label)
         base.default_call("#{API_NS}.getDetails",label)
+      end
+
+      # === Description:
+      #
+      # Add a given list of packages to the given channel
+      #
+      # === Parameters:
+      #
+      # +label+:: (_string_) channel label
+      # +packageIds+:: (_array_) array of package ids
+      #
+      # === Returns:
+      #
+      # (_int_) 1 on success, exception thrown otherwise
+      #
+      def add_packages(label,packages)
+        base.default_call("#{API_NS}.addPackages",label,packages)
       end
     end
   end
