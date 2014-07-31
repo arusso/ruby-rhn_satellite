@@ -37,6 +37,7 @@ DEPENDENCIES
   bundler
   jeweler
   mocha (~> 0.10.0)
+  rake
   rdoc (~> 3.8)
   rspec (~> 2.5.0)
   simplecov

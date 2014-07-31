@@ -1,13 +1,11 @@
 module RhnSatellite
     module Connection
         class Handler
-            
             include RhnSatellite::Common::Debug
-            
             class << self
                 attr_accessor :default_hostname,:default_username, :default_password
                 attr_writer :default_timeout, :default_https
-                
+
                 def instance_for(identifier,hostname=nil,username=nil,password=nil,timeout=nil,https=nil)
                     instances[identifier] ||= Handler.new(
                         hostname||default_hostname,
