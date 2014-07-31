@@ -252,6 +252,21 @@ module RhnSatellite
       def delete(label)
         base.default_call('channel.software.delete',label)
       end
+
+      # === Description:
+      #
+      # Returns details of the given channel as a map
+      #
+      # === Parameters:
+      # +label+:: (_string_) Label of software channel
+      #
+      # === Returns:
+      #
+      # * (_hash_)
+      #
+      def get_details(label)
+        base.default_call("#{API_NS}.getDetails",label)
+      end
     end
   end
 end
