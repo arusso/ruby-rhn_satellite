@@ -14,6 +14,7 @@ require 'rhn_satellite/channel_software'
 require 'rhn_satellite/channel_access'
 require 'rhn_satellite/schedule'
 require 'rhn_satellite/system'
+require 'rhn_satellite/system_custominfo'
 require 'rhn_satellite/systemgroup'
 require 'rhn_satellite/packages'
 
