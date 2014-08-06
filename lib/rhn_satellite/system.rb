@@ -106,6 +106,10 @@ module RhnSatellite
       def script_action_details(action_id)
         base.default_call('system.getScriptActionDetails',action_id).to_a
       end
+
+      def get_custom_values(system_id)
+        base.default_call('system.getCustomValues',system_id)
+      end
     end
   end
 end
