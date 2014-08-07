@@ -7,6 +7,10 @@ module RhnSatellite
         base.default_call('system.getId',name)
       end
 
+      def get_cpu(system_id)
+        base.default_call('system.getCpu',system_id)
+      end
+
       def active_systems
         base.default_call('system.listActiveSystems').to_a
       end
