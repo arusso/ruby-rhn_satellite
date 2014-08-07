@@ -289,6 +289,10 @@ module RhnSatellite
       def regenerate_yum_cache(label)
         base.default_call("#{API_NS}.regenerateYumCache",label)
       end
+
+      def get_channel_last_build_by_id(channel_id)
+        base.default_call("#{API_NS}.getChannelLastBuildById",channel_id)
+      end
     end
   end
 end
