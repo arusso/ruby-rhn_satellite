@@ -285,6 +285,10 @@ module RhnSatellite
       def add_packages(label,packages)
         base.default_call("#{API_NS}.addPackages",label,packages)
       end
+
+      def regenerate_yum_cache(label)
+        base.default_call("#{API_NS}.regenerateYumCache",label)
+      end
     end
   end
 end
