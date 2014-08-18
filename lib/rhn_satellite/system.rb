@@ -18,21 +18,21 @@ module RhnSatellite
       def delete(system_ids)
         base.default_call('system.deleteSystems',[*system_ids].collect{|i| i.to_i })
       end
-      
+
       def details(system_id)
         base.default_call('system.getDetails',system_id.to_i)
       end
-      
+
       def online?(server_name)
        !(system = get(server_name)).nil? && \
         !(sysdetails = details(system['id'])).nil? && \
           (sysdetails['osa_status'] == 'online')
       end
-      
+
       def active?(server_name)
         active_systems.any?{|system| system["name"] =~ /#{server_name}$/ }
       end
-      
+
       def relevant_erratas(system_id)
         base.default_call('system.getRelevantErrata',system_id).to_a
       end
@@ -48,11 +48,15 @@ module RhnSatellite
       def latest_installable_packages(system_id)
         base.default_call('system.listLatestInstallablePackages',system_id).to_a
       end
-      
+
       def latest_upgradable_packages(system_id)
         base.default_call('system.listLatestUpgradablePackages',system_id).to_a
       end
-      
+
+      def list_active_systems_details(system_ids)
+        base.default_call('system.listActiveSystemsDetails',system_ids)
+      end
+
       def uptodate?(system_id)
         latest_upgradable_packages(system_id).empty? && relevant_erratas(system_id).empty?
       end
