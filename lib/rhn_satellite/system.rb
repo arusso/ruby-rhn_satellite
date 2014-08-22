@@ -19,6 +19,10 @@ module RhnSatellite
         base.default_call('system.deleteSystems',[*system_ids].collect{|i| i.to_i })
       end
 
+      def get_details(system_id)
+        base.default_call('system.getDetails', system_id.to_i)
+      end
+
       def details(system_id)
         base.default_call('system.getDetails',system_id.to_i)
       end
