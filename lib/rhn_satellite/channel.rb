@@ -8,6 +8,10 @@ module RhnSatellite
       def list_my_channels
         base.default_call("#{API_NS}.listMyChannels")
       end
+
+      def list_all_channels
+        base.default_call("#{API_NS}.listAllChannels")
+      end
     end
   end
 end
