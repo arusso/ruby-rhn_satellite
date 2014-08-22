@@ -293,6 +293,23 @@ module RhnSatellite
       def get_channel_last_build_by_id(channel_id)
         base.default_call("#{API_NS}.getChannelLastBuildById",channel_id)
       end
+
+      # List systems subscribed to a particular channel
+      #
+      # === Parameters:
+      #
+      # +label+:: (_string_) channel label
+      #
+      # === Returns:
+      #
+      # * (_array_)
+      #   * (_hash_)
+      #     * (_int_) id
+      #     * (_string_) name
+      #
+      def list_subscribed_systems(label)
+        base.default_call("#{API_NS}.listSubscribedSystems",label)
+      end
     end
   end
 end
