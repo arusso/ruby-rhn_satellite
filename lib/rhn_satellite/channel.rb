@@ -12,6 +12,10 @@ module RhnSatellite
       def list_all_channels
         base.default_call("#{API_NS}.listAllChannels")
       end
+
+      def list_vendor_channels
+        base.default_call("#{API_NS}.listVendorChannels")
+      end
     end
   end
 end
