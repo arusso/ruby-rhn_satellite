@@ -12,7 +12,7 @@ the latest satellite. The existing methods should get you an idea how to add mis
 
 Patches (including tests) are welcomed!
 
-RedHat's API is documented here: http://docs.redhat.com/docs/en-US/Red_Hat_Network_Satellite/5.4.1/html/API_Overview/index.html
+RedHat's API is documented here: https://access.redhat.com/documentation/en-US/Red_Hat_Satellite/5.6/pdf/API_Overview/Red_Hat_Satellite-5.6-API_Overview-en-US.pdf
 
 == Credentials
 
