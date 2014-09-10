@@ -319,7 +319,7 @@ module RhnSatellite
       # +merge_to_label+:: (_string_) channel label to merge errata into
       # +start_date+:: (_string_) start date for errata
       # +end_date+:: (_string_) end date for errata
-      def merge_errata(label_from,label_to,date_start=Date.parse('1-Jan-2000'),date_end=Date.today)
+      def merge_errata(label_from,label_to,date_start=Date.parse('1-Jan-2000').to_s,date_end=Date.today.to_s)
         base.default_call("#{API_NS}.mergeErrata",label_from,label_to,date_start,date_end)
       end
     end
