@@ -310,6 +310,18 @@ module RhnSatellite
       def list_subscribed_systems(label)
         base.default_call("#{API_NS}.listSubscribedSystems",label)
       end
+
+      # Merge errata from one channel into another
+      #
+      # === Parameters:
+      #
+      # +merge_from_label+:: (_string_) channel label to source errata from
+      # +merge_to_label+:: (_string_) channel label to merge errata into
+      # +start_date+:: (_string_) start date for errata
+      # +end_date+:: (_string_) end date for errata
+      def merge_errata(label_from,label_to,date_start=Date.parse('1-Jan-2000'),date_end=Date.today)
+        base.default_call("#{API_NS}.mergeErrata",label_from,label_to,date_start,date_end)
+      end
     end
   end
 end
